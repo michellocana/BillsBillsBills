@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react'
 import { SafeAreaView, ScrollView, StatusBar } from 'react-native'
-import { API_URL } from '@env'
 import { NativeRouter, Route } from 'react-router-native'
 
 import Home from './src/pages/Home'
