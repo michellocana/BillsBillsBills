@@ -4,7 +4,7 @@ import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_GIST_ID } from '@env'
 
 import BillGroupCard from '../components/BillGroupCard'
 
-import { authorize, BillGroup, BillsResponse, fetchBillGroups, updateBillGroups } from '../helpers/github'
+import { authorize, BillGroup, BillsResponse, fetchBills, updateBillGroups } from '../helpers/github'
 
 const s = StyleSheet.create({
   spinner: {
@@ -44,7 +44,7 @@ export default function Home() {
         title='sign in with github'
         onPress={async () => {
           await authorize(GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET)
-          const newBills = await fetchBillGroups(GITHUB_GIST_ID)
+          const newBills = await fetchBills(GITHUB_GIST_ID)
           setBillsResponse(newBills)
         }}
       />

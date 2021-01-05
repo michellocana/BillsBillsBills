@@ -64,7 +64,7 @@ export type BillsResponse = {
   templates: Template[]
 }
 
-export async function fetchBillGroups(gistId: string): Promise<BillsResponse> {
+export async function fetchBills(gistId: string): Promise<BillsResponse> {
   const { data: gist } = await githubApi.get<Gist>(`/gists/${gistId}`)
   const billsUrl = gist.files['bills.json'].raw_url
   let { data: billsResponse } = await githubApi.get<BillsResponse>(billsUrl)
@@ -107,10 +107,17 @@ export async function createBillGroup(
 }
 
 export async function updateBillGroups(gistId: string, billsResponse: BillsResponse) {
+  const billsContent: BillsResponse = {
+    ...billsResponse,
+    billGroups: billsResponse.billGroups.sort((billGroupA, billGroupB) =>
+      billGroupA.id > billGroupB.id ? -1 : 1
+    )
+  }
+
   await githubApi.patch(`/gists/${gistId}`, {
     files: {
       'bills.json': {
-        content: JSON.stringify(billsResponse, null, 2)
+        content: JSON.stringify(billsContent, null, 2)
       }
     }
   })
