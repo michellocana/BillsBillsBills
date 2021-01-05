@@ -1,4 +1,5 @@
 import axios from 'axios'
+import dayjs from 'dayjs'
 import { Alert } from 'react-native'
 import { authorize as appAuthAuthorize } from 'react-native-app-auth'
 
@@ -44,10 +45,11 @@ type Gist = {
   }
 }
 
-type Bill = {
+export type Bill = {
+  id: string
   name: string
   expireDay: number
-  paid: boolean
+  isPaid: boolean
 }
 
 export type BillGroup = {
@@ -55,43 +57,38 @@ export type BillGroup = {
   bills: Bill[]
 }
 
-type Template = Omit<Bill, 'paid'>
+type Template = Omit<Bill, 'isPaid'>
 
-type BillsResponse = {
+export type BillsResponse = {
   billGroups: BillGroup[]
   templates: Template[]
 }
 
-export async function fetchBillGroups(gistId: string): Promise<BillGroup[]> {
+export async function fetchBillGroups(gistId: string): Promise<BillsResponse> {
   const { data: gist } = await githubApi.get<Gist>(`/gists/${gistId}`)
   const billsUrl = gist.files['bills.json'].raw_url
   let { data: billsResponse } = await githubApi.get<BillsResponse>(billsUrl)
   const { billGroups } = billsResponse
 
-  const today = new Date()
-  const currentMonth = today.getMonth() + 1
-  const currentYear = today.getFullYear()
-  const currentBillGroupId = `${currentYear}-${currentMonth}`
+  const today = dayjs()
+  const currentBillGroupId = today.format('YYYY-MM')
   const currentBillGroup = billGroups.find(billGroup => billGroup.id === currentBillGroupId)
 
   if (!currentBillGroup) {
-    const { billGroups: newBillGroups } = await createBillGroup(
-      gistId,
-      currentBillGroupId,
-      billsResponse
-    )
-
-    return newBillGroups
+    return {
+      ...billsResponse,
+      billGroups: await createBillGroup(gistId, currentBillGroupId, billsResponse)
+    }
   }
 
-  return billGroups
+  return billsResponse
 }
 
 export async function createBillGroup(
   gistId: string,
   billGroupId: string,
   billsResponse: BillsResponse
-): Promise<BillsResponse> {
+): Promise<BillGroup[]> {
   const { billGroups, templates } = billsResponse
   const newBillsResponse: BillsResponse = {
     ...billsResponse,
@@ -99,18 +96,22 @@ export async function createBillGroup(
       ...billGroups,
       {
         id: billGroupId,
-        bills: templates.map<Bill>((template: Template) => ({ ...template, paid: false }))
+        bills: templates.map<Bill>((template: Template) => ({ ...template, isPaid: false }))
       }
     ]
   }
 
+  await updateBillGroups(gistId, newBillsResponse)
+
+  return newBillsResponse.billGroups
+}
+
+export async function updateBillGroups(gistId: string, billsResponse: BillsResponse) {
   await githubApi.patch(`/gists/${gistId}`, {
     files: {
       'bills.json': {
-        content: JSON.stringify(newBillsResponse, null, 2)
+        content: JSON.stringify(billsResponse, null, 2)
       }
     }
   })
-
-  return newBillsResponse
 }

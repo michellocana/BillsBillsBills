@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
-import { Button, View, ActivityIndicator, Text, StyleSheet } from 'react-native'
+import React, { useCallback, useState } from 'react'
+import { Button, View, ActivityIndicator,  StyleSheet } from 'react-native'
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_GIST_ID } from '@env'
 
-import { authorize, fetchBillGroups, BillGroup } from '../helpers/github'
+import BillGroupCard from '../components/BillGroupCard'
+
+import { authorize, BillGroup, BillsResponse, fetchBillGroups, updateBillGroups } from '../helpers/github'
 
 const s = StyleSheet.create({
   spinner: {
@@ -11,7 +13,30 @@ const s = StyleSheet.create({
 })
 
 export default function Home() {
-  const [billGroups, setBillGroups] = useState<BillGroup[]>()
+  const [billsResponse, setBillsResponse] = useState<BillsResponse>({
+    templates: [],
+    billGroups: []
+  })
+
+  const onBillChange = useCallback(async (billId: string, isPaid: boolean, changedBillGroup: BillGroup) => {
+    const newBillsResponse = {
+      templates: billsResponse.templates,
+      billGroups: billsResponse.billGroups.map(billGroup => {
+        return {
+          ...billGroup,
+          bills: billGroup.bills.map(bill => {
+            if (billGroup.id === changedBillGroup.id && bill.id === billId)  {
+              return { ...bill, isPaid }
+            }
+
+            return { ...bill }
+          })
+        }
+      })
+    }
+
+    await updateBillGroups(GITHUB_GIST_ID, newBillsResponse)
+  }, [billsResponse])
 
   return (
     <View>
@@ -20,23 +45,17 @@ export default function Home() {
         onPress={async () => {
           await authorize(GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET)
           const newBills = await fetchBillGroups(GITHUB_GIST_ID)
-          setBillGroups(newBills)
+          setBillsResponse(newBills)
         }}
       />
 
-      {billGroups?.length ? (
-        billGroups.map(billGroup => (
-          <View key={billGroup.id}>
-            <Text>{billGroup.id}</Text>
-
-            {billGroup.bills.map(bill => (
-              <View key={bill.name}>
-                <Text>{bill.name}</Text>
-                <Text>{bill.expireDay}</Text>
-                <Text>{bill.paid ? 'paid' : 'not paid'}</Text>
-              </View>
-            ))}
-          </View>
+      {billsResponse?.billGroups.length ? (
+        billsResponse.billGroups.map((currentBillGroup: BillGroup) => (
+          <BillGroupCard
+            {...currentBillGroup}
+            key={currentBillGroup.id}
+            onBillChange={(billId, isPaid) => onBillChange(billId, isPaid, currentBillGroup)}
+          />
         ))
       ) : (
         <ActivityIndicator size='large' color='black' style={s.spinner} />
