@@ -3,10 +3,17 @@ import dayjs from 'dayjs'
 import { Alert } from 'react-native'
 import { authorize as appAuthAuthorize } from 'react-native-app-auth'
 
+import {
+  GITHUB_ACCESS_TOKEN_URL,
+  GITHUB_API_URL,
+  GITHUB_AUTHORIZATION_URL,
+  GITHUB_REVOCATION_URL
+} from '../constants/url'
+
 let accessToken: string
 
 const githubApi = axios.create({
-  baseURL: 'https://api.github.com'
+  baseURL: GITHUB_API_URL
 })
 
 githubApi.interceptors.request.use(config => {
@@ -22,13 +29,15 @@ export async function authorize(clientId: string, clientSecret: string) {
       redirectUrl: 'com.billstopay://oauthredirect',
       scopes: ['identity', 'gist'],
       serviceConfiguration: {
-        authorizationEndpoint: 'https://github.com/login/oauth/authorize',
-        tokenEndpoint: 'https://github.com/login/oauth/access_token',
-        revocationEndpoint: 'https://github.com/settings/connections/applications/<client-id>'
+        authorizationEndpoint: GITHUB_AUTHORIZATION_URL,
+        tokenEndpoint: GITHUB_ACCESS_TOKEN_URL,
+        revocationEndpoint: GITHUB_REVOCATION_URL
       }
     })
 
     accessToken = authState.accessToken
+
+    return authState
   } catch (e) {
     console.log(e)
 
@@ -96,7 +105,9 @@ export async function createBillGroup(
       ...billGroups,
       {
         id: billGroupId,
-        bills: templates.map<Bill>((template: Template) => ({ ...template, isPaid: false }))
+        bills: templates
+          .sort((templateA, templateB) => (templateA.expireDay < templateB.expireDay ? -1 : 1))
+          .map<Bill>((template: Template) => ({ ...template, isPaid: false }))
       }
     ]
   }

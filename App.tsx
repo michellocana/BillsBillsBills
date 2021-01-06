@@ -1,11 +1,15 @@
 import React, { Fragment } from 'react'
-import { SafeAreaView, ScrollView, StatusBar } from 'react-native'
+import { SafeAreaView, StatusBar } from 'react-native'
 import { NativeRouter, Route } from 'react-router-native'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 
-import Home from './src/pages/Home'
+import { HOME_ROUTE } from './src/constants/routes'
+
+import AuthProvider from './src/contexts/AuthProvider'
+
+import Home from './src/screens/Home'
 
 dayjs.extend(customParseFormat)
 dayjs.locale('pt-br')
@@ -15,11 +19,11 @@ export default function App() {
     <Fragment>
       <StatusBar barStyle='dark-content' />
       <SafeAreaView>
-        <ScrollView contentInsetAdjustmentBehavior='automatic'>
+        <AuthProvider>
           <NativeRouter>
-            <Route exact path='/' component={Home} />
+            <Route exact path={HOME_ROUTE} component={Home} />
           </NativeRouter>
-        </ScrollView>
+        </AuthProvider>
       </SafeAreaView>
     </Fragment>
   )
