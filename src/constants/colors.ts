@@ -1,0 +1,8 @@
+export const COLOR_GREEN_1 = '#31E897'
+export const COLOR_GREEN_2 = '#3CD16C'
+export const COLOR_WHITE = '#FFFFFF'
+export const COLOR_GRAY = '#272727'
+export const COLOR_DARK_GRAY = '#121212'
+export const COLOR_BLACK = '#333333'
+export const COLOR_LIGHT_GREEN = '#B7EDD5'
+export const COLOR_RED = '#BF0404'

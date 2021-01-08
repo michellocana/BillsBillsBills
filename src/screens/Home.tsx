@@ -5,6 +5,7 @@ import { GITHUB_GIST_ID } from '@env'
 import BillGroupCard from '../components/BillGroupCard'
 
 import { fetchBills, updateBillGroups } from '../helpers/github'
+import {  COLOR_GRAY, COLOR_GREEN_1 } from '../constants/colors'
 
 const s = StyleSheet.create({
   scrollView: {
@@ -12,7 +13,6 @@ const s = StyleSheet.create({
   }
 })
 
-// TODO make it dark mode by default
 // TODO make templates editable
 // TODO bottom bar
 export default function Home() {
@@ -39,6 +39,7 @@ export default function Home() {
       })
     }
 
+    setBillsResponse(newBillsResponse)
     await updateBillGroups(GITHUB_GIST_ID, newBillsResponse)
   }, [billsResponse])
 
@@ -60,6 +61,8 @@ export default function Home() {
         <RefreshControl
           refreshing={isRefreshing}
           onRefresh={() => fetchAllBills()}
+          progressBackgroundColor={COLOR_GRAY}
+          colors={[COLOR_GREEN_1]}
         />
       }
     >

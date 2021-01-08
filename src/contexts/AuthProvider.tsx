@@ -3,6 +3,7 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native'
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from '@env'
 
 import { authorize } from '../helpers/github'
+import { COLOR_GREEN_1, COLOR_WHITE } from '../constants/colors'
 
 type AuthProviderProps = {
   children: ReactNode
@@ -40,7 +41,7 @@ export default function AuthProvider(props: AuthProviderProps) {
   if (!accessToken) {
     return (
       <View style={s.spinner}>
-        <ActivityIndicator size='large' color='black' />
+        <ActivityIndicator size='large' color={COLOR_GREEN_1} />
       </View>
     )
   }
