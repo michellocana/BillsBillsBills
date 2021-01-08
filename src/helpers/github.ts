@@ -45,34 +45,6 @@ export async function authorize(clientId: string, clientSecret: string) {
   }
 }
 
-type Gist = {
-  files: {
-    [key: string]: {
-      filename: string
-      raw_url: string
-    }
-  }
-}
-
-export type Bill = {
-  id: string
-  name: string
-  expireDay: number
-  isPaid: boolean
-}
-
-export type BillGroup = {
-  id: string // yyyy-mm = 2020-12
-  bills: Bill[]
-}
-
-type Template = Omit<Bill, 'isPaid'>
-
-export type BillsResponse = {
-  billGroups: BillGroup[]
-  templates: Template[]
-}
-
 export async function fetchBills(gistId: string): Promise<BillsResponse> {
   const { data: gist } = await githubApi.get<Gist>(`/gists/${gistId}`)
   const billsUrl = gist.files['bills.json'].raw_url

@@ -4,7 +4,7 @@ import { GITHUB_GIST_ID } from '@env'
 
 import BillGroupCard from '../components/BillGroupCard'
 
-import { BillGroup, BillsResponse, fetchBills, updateBillGroups } from '../helpers/github'
+import { fetchBills, updateBillGroups } from '../helpers/github'
 
 const s = StyleSheet.create({
   scrollView: {
@@ -12,6 +12,9 @@ const s = StyleSheet.create({
   }
 })
 
+// TODO make it dark mode by default
+// TODO make templates editable
+// TODO bottom bar
 export default function Home() {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [billsResponse, setBillsResponse] = useState<BillsResponse>({

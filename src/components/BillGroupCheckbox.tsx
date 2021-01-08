@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import CheckBox from '@react-native-community/checkbox'
 
-import { Bill } from '../helpers/github'
-
 type BillGroupCheckboxProps = Bill & {
   onBillChange(billId: string, isPaid: boolean): void
 }

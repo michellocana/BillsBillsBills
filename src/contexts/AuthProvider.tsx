@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from '@env'
 
 import { authorize } from '../helpers/github'
 
 type AuthProviderProps = {
-  children: React.ReactElement
+  children: ReactNode
 }
 
 export const AUTH_CONTEXT_INITIAL_STATE = {

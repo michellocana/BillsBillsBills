@@ -4,8 +4,6 @@ import { StyleSheet, Text, View } from 'react-native'
 
 import BillGroupCheckbox from './BillGroupCheckbox'
 
-import { BillGroup } from '../helpers/github'
-
 const s = StyleSheet.create({
   container: {
     margin: 8,
