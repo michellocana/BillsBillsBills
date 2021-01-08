@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "react-native start",
-    "android": "react-native run-android",
+    "start": "cross-env DOT_ENV_FILE=development react-native start",
     "test": "jest"
   },
   "dependencies": {
@@ -26,6 +25,7 @@
     "@types/react-router-native": "^5.1.0",
     "@types/react-test-renderer": "^16.9.0",
     "babel-jest": "^24.1.0",
+    "cross-env": "^7.0.3",
     "jest": "^24.1.0",
     "metro-react-native-babel-preset": "0.54.1",
     "react-native-dotenv": "^2.4.3",
