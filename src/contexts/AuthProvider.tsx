@@ -3,7 +3,7 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native'
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from '@env'
 
 import { authorize } from '../helpers/github'
-import { COLOR_GREEN_1, COLOR_WHITE } from '../constants/colors'
+import { COLOR_GREEN_1 } from '../constants/colors'
 
 type AuthProviderProps = {
   children: ReactNode

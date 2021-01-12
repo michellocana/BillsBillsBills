@@ -9,12 +9,11 @@ import {  COLOR_GRAY, COLOR_GREEN_1 } from '../constants/colors'
 
 const s = StyleSheet.create({
   scrollView: {
-    minHeight: '100%'
+    flex: 1
   }
 })
 
 // TODO make templates editable
-// TODO bottom bar
 export default function Home() {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [billsResponse, setBillsResponse] = useState<BillsResponse>({
