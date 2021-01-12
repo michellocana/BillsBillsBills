@@ -1,22 +1,28 @@
 import React from 'react'
-import { ScrollView, StyleSheet, Text } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
+
+import ScreenScrollView from '../components/ScreenScrollView'
 
 import { COLOR_WHITE } from '../constants/colors'
 
-const s = StyleSheet.create({
-  scrollView: {
-    flex: 1
-  },
+import useBills from '../hooks/useBills'
 
+const s = StyleSheet.create({
   text: {
     color: COLOR_WHITE
   }
 })
 
 export default function Templates() {
+  const { billsResponse } = useBills()
+
   return (
-    <ScrollView style={s.scrollView}>
-      <Text style={s.text}>templates</Text>
-    </ScrollView>
+    <ScreenScrollView>
+      {billsResponse.templates.map(template => (
+        <Text key={template.id} style={s.text}>
+          {template.name}
+        </Text>
+      ))}
+    </ScreenScrollView>
   )
 }

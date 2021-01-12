@@ -9,6 +9,7 @@ import { HOME_ROUTE, TEMPLATES_ROUTE } from './src/constants/routes'
 import { COLOR_BLACK, COLOR_DARK_GRAY } from './src/constants/colors'
 
 import AuthProvider from './src/contexts/AuthProvider'
+import BillsProvider from './src/contexts/BillsProvider'
 
 import BottomBar from './src/components/BottomBar'
 
@@ -36,15 +37,18 @@ export default function App() {
       <StatusBar barStyle='light-content' backgroundColor={COLOR_BLACK} />
       <SafeAreaView style={s.safeAreaView}>
         <AuthProvider>
-          <NativeRouter>
-            <View style={[s.routerWrapper, { paddingBottom: bottomBarLayout?.height ?? 0 }]}>
-              <Switch>
-                <Route exact path={HOME_ROUTE} component={Home} />
-                <Route path={TEMPLATES_ROUTE} component={Templates} />
-              </Switch>
-              <BottomBar onLayout={setBottomBarLayout} />
-            </View>
-          </NativeRouter>
+          <BillsProvider>
+            <NativeRouter>
+              <View style={[s.routerWrapper, { paddingBottom: bottomBarLayout?.height ?? 0 }]}>
+                <Switch>
+                  <Route component={Templates} />
+                  <Route exact path={HOME_ROUTE} component={Home} />
+                  <Route path={TEMPLATES_ROUTE} component={Templates} />
+                </Switch>
+                <BottomBar onLayout={setBottomBarLayout} />
+              </View>
+            </NativeRouter>
+          </BillsProvider>
         </AuthProvider>
       </SafeAreaView>
     </>
