@@ -45,6 +45,24 @@ export async function authorize(clientId: string, clientSecret: string) {
   }
 }
 
+function setOverdue(billsResponse: BillsResponse): BillsResponse {
+  const today = dayjs()
+
+  return {
+    ...billsResponse,
+    billGroups: billsResponse.billGroups.map(billGroup => ({
+      ...billGroup,
+      bills: billGroup.bills.map(bill => {
+        const expireDate = dayjs(`${billGroup.id}-${bill.expireDay}`, 'YYYY-MM-D')
+        return {
+          ...bill,
+          isPastPaymentTerm: expireDate.isBefore(today)
+        }
+      })
+    }))
+  }
+}
+
 export async function fetchBills(gistId: string): Promise<BillsResponse> {
   const { data: gist } = await githubApi.get<Gist>(`/gists/${gistId}`)
   const billsUrl = gist.files['bills.json'].raw_url
@@ -56,13 +74,13 @@ export async function fetchBills(gistId: string): Promise<BillsResponse> {
   const currentBillGroup = billGroups.find(billGroup => billGroup.id === currentBillGroupId)
 
   if (!currentBillGroup) {
-    return {
+    return setOverdue({
       ...billsResponse,
       billGroups: await createBillGroup(gistId, currentBillGroupId, billsResponse)
-    }
+    })
   }
 
-  return billsResponse
+  return setOverdue(billsResponse)
 }
 
 export async function createBillGroup(

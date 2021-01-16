@@ -1,9 +1,9 @@
 import { types } from '@babel/core'
 import React, { ReactNode } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, ViewProps } from 'react-native'
 import { COLOR_GRAY, COLOR_RED, COLOR_GREEN_1 } from '../constants/colors'
 
-type CardProps = {
+type CardProps = ViewProps & {
   children: ReactNode
   type: CardType
 }
@@ -31,11 +31,15 @@ const s = StyleSheet.create({
   }
 })
 
-export default function Card({ children, type }: CardProps) {
-  const typeStyle: Partial<Record<CardType, any>> = {
+export default function Card({ children, type, style, ...otherProps }: CardProps) {
+  const typeStyle: Record<CardType, any> = {
     [CardType.Success]: s.containerSuccess,
     [CardType.Danger]: s.containerDanger
   }
 
-  return <View style={[s.container, typeStyle[type]]}>{children}</View>
+  return (
+    <View style={[s.container, typeStyle[type], style]} {...otherProps}>
+      {children}
+    </View>
+  )
 }

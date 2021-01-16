@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import CheckBox from '@react-native-community/checkbox'
-import { COLOR_GREEN_1, COLOR_GREEN_2, COLOR_WHITE } from '../constants/colors'
+
+import { COLOR_GREEN_1, COLOR_WHITE } from '../constants/colors'
+import ExpireDay, { ExpireDayType } from './ExpireDay'
 
 type BillGroupCheckboxProps = Bill & {
   onBillChange(billId: string, isPaid: boolean): void
@@ -22,6 +24,7 @@ export default function BillGroupCheckbox({
   expireDay,
   name,
   isPaid,
+  isPastPaymentTerm,
   onBillChange
 }: BillGroupCheckboxProps) {
   const [value, setValue] = useState(isPaid)
@@ -38,7 +41,11 @@ export default function BillGroupCheckbox({
       />
 
       <Text style={s.text}>
-        {name} (vence no dia {expireDay})
+        {name}
+        <ExpireDay
+          day={expireDay}
+          type={isPastPaymentTerm && !isPaid ? ExpireDayType.Danger : ExpireDayType.Success}
+        />
       </Text>
     </View>
   )
