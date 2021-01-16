@@ -1,27 +1,12 @@
 import dayjs from 'dayjs'
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { COLOR_GRAY, COLOR_GREEN_1, COLOR_RED, COLOR_WHITE } from '../constants/colors'
+import { StyleSheet, Text } from 'react-native'
+import { COLOR_WHITE } from '../constants/colors'
 
 import BillGroupCheckbox from './BillGroupCheckbox'
+import Card, { CardType } from './Card'
 
 const s = StyleSheet.create({
-  container: {
-    margin: 8,
-    padding: 16,
-    backgroundColor: COLOR_GRAY,
-    borderRadius: 4,
-    borderBottomWidth: 4
-  },
-
-  containerDanger: {
-    borderBottomColor: COLOR_RED
-  },
-
-  containerSuccess: {
-    borderBottomColor: COLOR_GREEN_1
-  },
-
   title: {
     fontWeight: '700',
     color: COLOR_WHITE,
@@ -38,12 +23,12 @@ export default function BillGroupCard({ id, bills, onBillChange }: BillGroupCard
   const hasAllBillsPaid = bills.every(bill => bill.isPaid)
 
   return (
-    <View key={id} style={[s.container, hasAllBillsPaid ? s.containerSuccess : s.containerDanger]}>
+    <Card key={id} type={hasAllBillsPaid ? CardType.Success : CardType.Danger}>
       <Text style={s.title}>{date}</Text>
 
       {bills.map(bill => (
         <BillGroupCheckbox {...bill} key={bill.id} onBillChange={onBillChange} />
       ))}
-    </View>
+    </Card>
   )
 }

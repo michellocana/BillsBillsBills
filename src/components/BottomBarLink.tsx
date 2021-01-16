@@ -34,6 +34,7 @@ type BottomBarLinkProps = {
   children: string
 }
 
+// TODO animate color transition
 export default function BottomBarLink({ to, icon, children }: BottomBarLinkProps) {
   const history = useHistory()
   const location = useLocation()

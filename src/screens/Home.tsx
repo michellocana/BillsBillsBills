@@ -5,7 +5,6 @@ import BillGroupCard from '../components/BillGroupCard'
 import useBills from '../hooks/useBills'
 import ScreenScrollView from '../components/ScreenScrollView'
 
-// TODO make templates editable
 export default function Home() {
   const { billsResponse, onBillChange } = useBills()
 
