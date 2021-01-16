@@ -12,6 +12,7 @@ type Bill = {
   name: string
   expireDay: number
   isPaid: boolean
+  isPastPaymentTerm: boolean
 }
 
 type BillGroup = {
