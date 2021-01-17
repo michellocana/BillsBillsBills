@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import Icon from 'react-native-vector-icons/Feather'
+import { StyleSheet, TextInput, View } from 'react-native'
 
-import { COLOR_GREEN_1, COLOR_LIGHT_RED, COLOR_WHITE } from '../constants/colors'
+import { COLOR_WHITE } from '../constants/colors'
+import ActionButton, { ActionButtonColor, ActionButtonType } from './ActionButton'
 import { CardType } from './Card'
 
 import Modal from './Modal'
@@ -29,29 +29,6 @@ const s = StyleSheet.create({
   actions: {
     flexDirection: 'row',
     justifyContent: 'space-between'
-  },
-
-  iconTouchable: {
-    paddingVertical: 4,
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-
-  icon: {
-    marginRight: 4,
-    fontSize: 24
-  },
-
-  action: {
-    fontSize: 16
-  },
-
-  cancel: {
-    color: COLOR_LIGHT_RED
-  },
-
-  save: {
-    color: COLOR_GREEN_1
   }
 })
 
@@ -111,15 +88,21 @@ export default function TemplateFormModal({
       />
 
       <View style={s.actions}>
-        <TouchableOpacity style={s.iconTouchable} onPress={submit}>
-          <Icon name='check' style={[s.icon, s.save]} />
-          <Text style={[s.action, s.save]}>Salvar</Text>
-        </TouchableOpacity>
+        <ActionButton
+          onPress={submit}
+          type={ActionButtonType.Save}
+          color={ActionButtonColor.Success}
+        >
+          Salvar
+        </ActionButton>
 
-        <TouchableOpacity style={s.iconTouchable} onPress={onClose}>
-          <Icon name='x' style={[s.icon, s.cancel]} />
-          <Text style={[s.action, s.cancel]}>Cancelar</Text>
-        </TouchableOpacity>
+        <ActionButton
+          onPress={onClose}
+          type={ActionButtonType.Cancel}
+          color={ActionButtonColor.Danger}
+        >
+          Cancelar
+        </ActionButton>
       </View>
     </Modal>
   )

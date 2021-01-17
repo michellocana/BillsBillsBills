@@ -83,15 +83,18 @@ export default function BillsProvider({ children }: BillsProviderProps) {
     [billsResponse]
   )
 
-  const onTemplateDelete = useCallback(async (templateToDelete: Template) => {
-    const newBillsResponse: BillsResponse = {
-      templates: billsResponse.templates.filter(template => template.id !== templateToDelete.id),
-      billGroups: billsResponse.billGroups
-    }
+  const onTemplateDelete = useCallback(
+    async (templateToDelete: Template) => {
+      const newBillsResponse: BillsResponse = {
+        templates: billsResponse.templates.filter(template => template.id !== templateToDelete.id),
+        billGroups: billsResponse.billGroups
+      }
 
-    setBillsResponse(newBillsResponse)
-    await updateGist(GITHUB_GIST_ID, newBillsResponse)
-  }, [])
+      setBillsResponse(newBillsResponse)
+      await updateGist(GITHUB_GIST_ID, newBillsResponse)
+    },
+    [billsResponse]
+  )
 
   const fetchAllBills = useCallback(async () => {
     setIsRefreshing(true)
