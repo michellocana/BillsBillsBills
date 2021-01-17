@@ -1,22 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import {
-  Animated,
-  KeyboardAvoidingView,
-  Modal,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View
-} from 'react-native'
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 
-import { COLOR_DARK_GRAY, COLOR_GREEN_1, COLOR_LIGHT_RED, COLOR_WHITE } from '../constants/colors'
-import { DEFAULT_ANIMATION_DURATION } from '../constants/animation'
+import { COLOR_GREEN_1, COLOR_LIGHT_RED, COLOR_WHITE } from '../constants/colors'
+import { CardType } from './Card'
 
-import Card, { CardType } from './Card'
-import Spinner from './Spinner'
+import Modal from './Modal'
 
 type TemplateFormModalProps = {
   isOpen: boolean
@@ -26,24 +15,6 @@ type TemplateFormModalProps = {
 }
 
 const s = StyleSheet.create({
-  backdrop: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    opacity: 0.9,
-    backgroundColor: COLOR_DARK_GRAY
-  },
-
-  content: {
-    width: '100%',
-    height: '100%',
-    maxWidth: 400,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 16
-  },
-
   input: {
     height: 40,
     borderColor: COLOR_WHITE,
@@ -58,12 +29,6 @@ const s = StyleSheet.create({
   actions: {
     flexDirection: 'row',
     justifyContent: 'space-between'
-  },
-
-  card: {
-    width: '100%',
-    margin: 0,
-    position: 'relative'
   },
 
   iconTouchable: {
@@ -87,25 +52,6 @@ const s = StyleSheet.create({
 
   save: {
     color: COLOR_GREEN_1
-  },
-
-  loader: {
-    position: 'absolute',
-    zIndex: 1,
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-
-  loaderBackground: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    backgroundColor: COLOR_DARK_GRAY,
-    opacity: 0.6
   }
 })
 
@@ -118,7 +64,6 @@ export default function TemplateFormModal({
   const [name, setName] = useState(template.name)
   const [expireDay, setExpireDay] = useState(template.expireDay.toString())
   const [isSaving, setIsSaving] = useState(false)
-  const opacity = useRef(new Animated.Value(0)).current
   const nameTextInputRef = useRef<TextInput>(null)
   const submit = useCallback(async () => {
     setIsSaving(true)
@@ -134,20 +79,12 @@ export default function TemplateFormModal({
     }
   }, [isOpen])
 
-  useEffect(() => {
-    Animated.timing(opacity, {
-      toValue: Number(isSaving),
-      duration: DEFAULT_ANIMATION_DURATION,
-      useNativeDriver: true
-    }).start()
-  }, [isSaving])
-
   return (
     <Modal
-      transparent
-      visible={isOpen}
-      animationType='fade'
-      onRequestClose={onClose}
+      isOpen={isOpen}
+      onClose={onClose}
+      isSaving={isSaving}
+      type={CardType.Success}
       onShow={() => {
         requestAnimationFrame(() => {
           if (nameTextInputRef.current) {
@@ -156,49 +93,34 @@ export default function TemplateFormModal({
         })
       }}
     >
-      <TouchableWithoutFeedback onPress={onClose}>
-        <View style={s.backdrop} />
-      </TouchableWithoutFeedback>
+      <TextInput
+        ref={nameTextInputRef}
+        value={name}
+        style={s.input}
+        onChangeText={setName}
+        onSubmitEditing={submit}
+      />
 
-      <KeyboardAvoidingView style={s.content} pointerEvents='box-none'>
-        <Card type={CardType.Success} style={s.card}>
-          <Animated.View style={[s.loader, { opacity }]} pointerEvents={isSaving ? 'auto' : 'none'}>
-            <View style={s.loaderBackground} />
-            <Spinner />
-          </Animated.View>
+      <TextInput
+        value={expireDay}
+        style={s.input}
+        onChangeText={setExpireDay}
+        keyboardType='numeric'
+        maxLength={2}
+        onSubmitEditing={submit}
+      />
 
-          <View>
-            <TextInput
-              ref={nameTextInputRef}
-              value={name}
-              style={s.input}
-              onChangeText={setName}
-              onSubmitEditing={submit}
-            />
+      <View style={s.actions}>
+        <TouchableOpacity style={s.iconTouchable} onPress={submit}>
+          <Icon name='check' style={[s.icon, s.save]} />
+          <Text style={[s.action, s.save]}>Salvar</Text>
+        </TouchableOpacity>
 
-            <TextInput
-              value={expireDay}
-              style={s.input}
-              onChangeText={setExpireDay}
-              keyboardType='numeric'
-              maxLength={2}
-              onSubmitEditing={submit}
-            />
-
-            <View style={s.actions}>
-              <TouchableOpacity style={s.iconTouchable} onPress={submit}>
-                <Icon name='check' style={[s.icon, s.save]} />
-                <Text style={[s.action, s.save]}>Salvar</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={s.iconTouchable} onPress={onClose}>
-                <Icon name='x' style={[s.icon, s.cancel]} />
-                <Text style={[s.action, s.cancel]}>Cancelar</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Card>
-      </KeyboardAvoidingView>
+        <TouchableOpacity style={s.iconTouchable} onPress={onClose}>
+          <Icon name='x' style={[s.icon, s.cancel]} />
+          <Text style={[s.action, s.cancel]}>Cancelar</Text>
+        </TouchableOpacity>
+      </View>
     </Modal>
   )
 }

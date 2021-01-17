@@ -5,7 +5,7 @@ import useBills from '../hooks/useBills'
 import ScreenScrollView from '../components/ScreenScrollView'
 import TemplateCard from '../components/TemplateCard'
 
-// TODO make templates editable
+// TODO create template modal
 export default function Templates() {
   const { billsResponse } = useBills()
 
