@@ -12,7 +12,7 @@ type Bill = {
   name: string
   expireDay: number
   isPaid: boolean
-  isPastPaymentTerm: boolean
+  isPastPaymentTerm?: boolean
 }
 
 type BillGroup = {
@@ -20,7 +20,9 @@ type BillGroup = {
   bills: Bill[]
 }
 
-type Template = Omit<Bill, 'isPaid'>
+type Template = Omit<Bill, 'isPaid' | 'isPastPaymentTerm'> & {
+  isEnabled: boolean
+}
 
 type BillsResponse = {
   billGroups: BillGroup[]

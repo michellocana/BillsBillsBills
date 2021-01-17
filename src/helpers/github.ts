@@ -89,18 +89,18 @@ export async function createBillGroup(
   billsResponse: BillsResponse
 ): Promise<BillGroup[]> {
   const { billGroups, templates } = billsResponse
-  const newBillsResponse: BillsResponse = {
+  const newBillsResponse: BillsResponse = setOverdue({
     ...billsResponse,
-    billGroups: [
-      ...billGroups,
-      {
+    billGroups: [...billGroups]
+      .concat({
         id: billGroupId,
         bills: templates
+          .filter(template => template.isEnabled)
           .sort((templateA, templateB) => (templateA.expireDay < templateB.expireDay ? -1 : 1))
-          .map<Bill>((template: Template) => ({ ...template, isPaid: false }))
-      }
-    ]
-  }
+          .map(({ id, name, expireDay }: Template) => ({ id, name, expireDay, isPaid: false }))
+      })
+      .sort((billGroupA, billGroupB) => (billGroupA.id > billGroupB.id ? -1 : 1))
+  })
 
   await updateGist(gistId, newBillsResponse)
 

@@ -8,8 +8,6 @@ import ExpireDay from './ExpireDay'
 import TemplateModal from './TemplateModal'
 import useBills from '../hooks/useBills'
 
-type TemplateCardProps = Template & {}
-
 const s = StyleSheet.create({
   textWrapper: {
     flexDirection: 'row',
@@ -34,7 +32,7 @@ const s = StyleSheet.create({
   }
 })
 
-export default function TemplateCard({ ...template }: TemplateCardProps) {
+export default function TemplateCard({ ...template }: Template) {
   const { onTemplateChange } = useBills()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -57,11 +55,12 @@ export default function TemplateCard({ ...template }: TemplateCardProps) {
 
           <Switch
             trackColor={{
-              false: COLOR_RED,
+              false: COLOR_LIGHT_RED,
               true: COLOR_GREEN_1
             }}
             thumbColor={COLOR_WHITE}
-            value
+            value={template.isEnabled}
+            onValueChange={isEnabled => onTemplateChange({ ...template, isEnabled })}
           />
 
           <TouchableOpacity activeOpacity={0.5} onPress={() => {}} style={s.iconTouchable}>
