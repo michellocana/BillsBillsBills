@@ -34,7 +34,7 @@ const s = StyleSheet.create({
 })
 
 export default function TemplateCard({ id, name, expireDay }: TemplateCardProps) {
-  const [isModalOpen, setIsModalOpen] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
     <>
@@ -71,7 +71,7 @@ export default function TemplateCard({ id, name, expireDay }: TemplateCardProps)
       <TemplateEditModal
         initialName={name}
         initialExpireDay={expireDay}
-        isOpen={id === 'fies'}
+        isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
     </>

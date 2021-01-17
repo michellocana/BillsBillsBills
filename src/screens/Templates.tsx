@@ -12,7 +12,7 @@ export default function Templates() {
   return (
     <ScreenScrollView>
       {billsResponse.templates.map(template => (
-        <TemplateCard {...template} />
+        <TemplateCard key={template.id} {...template} />
       ))}
     </ScreenScrollView>
   )

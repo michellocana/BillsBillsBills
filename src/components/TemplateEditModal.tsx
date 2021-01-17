@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   KeyboardAvoidingView,
   Modal,
@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View as KeyboardAvoid
 } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 
@@ -23,16 +23,16 @@ type TemplateEditModalProps = {
 
 const s = StyleSheet.create({
   backdrop: {
-    opacity: 0.9,
-    backgroundColor: COLOR_DARK_GRAY,
     position: 'absolute',
     width: '100%',
-    height: '100%'
+    height: '100%',
+    opacity: 0.9,
+    backgroundColor: COLOR_DARK_GRAY
   },
 
   content: {
-    flex: 1,
     width: '100%',
+    height: '100%',
     maxWidth: 400,
     alignSelf: 'center',
     alignItems: 'center',
@@ -57,7 +57,8 @@ const s = StyleSheet.create({
   },
 
   card: {
-    width: '100%'
+    width: '100%',
+    margin: 0
   },
 
   iconTouchable: {
@@ -92,17 +93,28 @@ export default function TemplateEditModal({
 }: TemplateEditModalProps) {
   const [name, setName] = useState(initialName)
   const [expireDay, setExpireDay] = useState(initialExpireDay.toString())
+  const nameTextInputRef = useRef<TextInput>(null)
 
   return (
-    <Modal transparent visible={isOpen} animationType='fade'>
+    <Modal
+      transparent
+      visible={isOpen}
+      animationType='fade'
+      onRequestClose={onClose}
+      onShow={() => {
+        if (nameTextInputRef.current) {
+          nameTextInputRef.current.focus()
+        }
+      }}
+    >
       <TouchableWithoutFeedback onPress={onClose}>
-        <View style={s.backdrop} />
+        <KeyboardAvoid style={s.backdrop} />
       </TouchableWithoutFeedback>
 
-      <KeyboardAvoidingView style={s.content}>
+      <KeyboardAvoidingView style={s.content} pointerEvents='box-none'>
         <Card type={CardType.Success} style={s.card}>
-          <View>
-            <TextInput value={name} style={s.input} onChangeText={setName} />
+          <KeyboardAvoid>
+            <TextInput ref={nameTextInputRef} value={name} style={s.input} onChangeText={setName} />
 
             <TextInput
               value={expireDay}
@@ -112,18 +124,24 @@ export default function TemplateEditModal({
               maxLength={2}
             />
 
-            <View style={s.actions}>
-              <TouchableOpacity onPress={() => {}} style={s.iconTouchable}>
+            <KeyboardAvoid style={s.actions}>
+              <TouchableOpacity
+                style={s.iconTouchable}
+                onPress={() => {
+                  // TODO onSavePress
+                  onClose()
+                }}
+              >
                 <Icon name='check' style={[s.icon, s.save]} />
                 <Text style={[s.action, s.save]}>Salvar</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => {}} style={s.iconTouchable}>
+              <TouchableOpacity style={s.iconTouchable} onPress={onClose}>
                 <Icon name='x' style={[s.icon, s.cancel]} />
                 <Text style={[s.action, s.cancel]}>Cancelar</Text>
               </TouchableOpacity>
-            </View>
-          </View>
+            </KeyboardAvoid>
+          </KeyboardAvoid>
         </Card>
       </KeyboardAvoidingView>
     </Modal>
