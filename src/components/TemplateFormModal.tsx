@@ -99,7 +99,7 @@ export default function TemplateFormModal({
         <ActionButton
           onPress={onClose}
           type={ActionButtonType.Cancel}
-          color={ActionButtonColor.Danger}
+          color={ActionButtonColor.Neutral}
         >
           Cancelar
         </ActionButton>
