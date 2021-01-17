@@ -23,7 +23,7 @@ const s = StyleSheet.create({
 })
 
 export default function ExpireDay({ day, type = ExpireDayType.Success }: ExpireDayProps) {
-  const colors: Record<ExpireDayType, any> = {
+  const colors: Record<ExpireDayType, string> = {
     [ExpireDayType.Danger]: COLOR_LIGHT_RED_RGB,
     [ExpireDayType.Success]: COLOR_GREEN_1_RGB
   }

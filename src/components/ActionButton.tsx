@@ -40,12 +40,12 @@ type ActionButtonProps = {
 }
 
 export default function ActionButton({ onPress, children, type, color }: ActionButtonProps) {
-  const icons: Record<ActionButtonType, any> = {
+  const icons: Record<ActionButtonType, string> = {
     [ActionButtonType.Save]: 'check',
     [ActionButtonType.Trash]: 'trash-2',
     [ActionButtonType.Cancel]: 'x'
   }
-  const colors: Record<ActionButtonColor, any> = {
+  const colors: Record<ActionButtonColor, string> = {
     [ActionButtonColor.Success]: COLOR_GREEN_1,
     [ActionButtonColor.Danger]: COLOR_LIGHT_RED,
     [ActionButtonColor.Neutral]: COLOR_WHITE

@@ -24,7 +24,7 @@ const s = StyleSheet.create({
 })
 
 export default function Card({ children, type, style, ...otherProps }: CardProps) {
-  const borderColors: Record<CardType, any> = {
+  const borderColors: Record<CardType, string> = {
     [CardType.Danger]: COLOR_LIGHT_RED_RGB,
     [CardType.Success]: COLOR_GREEN_1_RGB
   }
