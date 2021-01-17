@@ -118,7 +118,7 @@ export default function TemplateFormModal({
   const [name, setName] = useState(template.name)
   const [expireDay, setExpireDay] = useState(template.expireDay.toString())
   const [isSaving, setIsSaving] = useState(false)
-  const opacityValue = useRef(new Animated.Value(0)).current
+  const opacity = useRef(new Animated.Value(0)).current
   const nameTextInputRef = useRef<TextInput>(null)
   const submit = useCallback(async () => {
     setIsSaving(true)
@@ -135,7 +135,7 @@ export default function TemplateFormModal({
   }, [isOpen])
 
   useEffect(() => {
-    Animated.timing(opacityValue, {
+    Animated.timing(opacity, {
       toValue: Number(isSaving),
       duration: DEFAULT_ANIMATION_DURATION,
       useNativeDriver: true
@@ -162,10 +162,7 @@ export default function TemplateFormModal({
 
       <KeyboardAvoidingView style={s.content} pointerEvents='box-none'>
         <Card type={CardType.Success} style={s.card}>
-          <Animated.View
-            style={[s.loader, { opacity: opacityValue }]}
-            pointerEvents={isSaving ? 'auto' : 'none'}
-          >
+          <Animated.View style={[s.loader, { opacity }]} pointerEvents={isSaving ? 'auto' : 'none'}>
             <View style={s.loaderBackground} />
             <Spinner />
           </Animated.View>

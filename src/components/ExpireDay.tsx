@@ -1,8 +1,9 @@
-import React from 'react'
-import { StyleSheet } from 'react-native'
+import React, { useEffect, useRef } from 'react'
+import { Animated, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 
-import { COLOR_GREEN_1, COLOR_LIGHT_RED, COLOR_RED } from '../constants/colors'
+import { COLOR_GREEN_1_RGB, COLOR_LIGHT_RED_RGB } from '../constants/colors'
+import { DEFAULT_ANIMATION_DURATION } from '../constants/animation'
 
 type ExpireDayProps = {
   day: number
@@ -10,37 +11,47 @@ type ExpireDayProps = {
 }
 
 export enum ExpireDayType {
-  Success = 'Success',
-  Danger = 'Danger'
+  Danger,
+  Success
 }
 
 const s = StyleSheet.create({
   icon: {
     fontSize: 16,
     marginLeft: 8
-  },
-
-  iconSuccess: {
-    color: COLOR_GREEN_1
-  },
-
-  iconDanger: {
-    color: COLOR_LIGHT_RED
   }
 })
 
-// TODO animate type change
 export default function ExpireDay({ day, type = ExpireDayType.Success }: ExpireDayProps) {
-  const typeStyle: Record<ExpireDayType, any> = {
-    [ExpireDayType.Success]: s.iconSuccess,
-    [ExpireDayType.Danger]: s.iconDanger
+  const colors: Record<ExpireDayType, any> = {
+    [ExpireDayType.Danger]: COLOR_LIGHT_RED_RGB,
+    [ExpireDayType.Success]: COLOR_GREEN_1_RGB
   }
+  const color = useRef(new Animated.Value(type)).current
+  const AnimatedIcon = useRef(Animated.createAnimatedComponent(Icon)).current
+
+  useEffect(() => {
+    Animated.timing(color, {
+      toValue: type,
+      duration: DEFAULT_ANIMATION_DURATION,
+      useNativeDriver: false
+    }).start()
+  }, [type])
 
   return (
     <>
       {' '}
-      <Icon name='calendar' style={[s.icon, typeStyle[type]]} />
-      {` ${day}`}
+      <Animated.Text
+        style={{
+          color: color.interpolate({
+            inputRange: Object.keys(colors).map(Number),
+            outputRange: Object.values(colors)
+          })
+        }}
+      >
+        <AnimatedIcon name='calendar' style={[s.icon]} />
+        {` ${day}`}
+      </Animated.Text>
     </>
   )
 }
