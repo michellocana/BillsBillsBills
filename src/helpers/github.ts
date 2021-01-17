@@ -102,23 +102,16 @@ export async function createBillGroup(
     ]
   }
 
-  await updateBillGroups(gistId, newBillsResponse)
+  await updateGist(gistId, newBillsResponse)
 
   return newBillsResponse.billGroups
 }
 
-export async function updateBillGroups(gistId: string, billsResponse: BillsResponse) {
-  const billsContent: BillsResponse = {
-    ...billsResponse,
-    billGroups: billsResponse.billGroups.sort((billGroupA, billGroupB) =>
-      billGroupA.id > billGroupB.id ? -1 : 1
-    )
-  }
-
-  await githubApi.patch(`/gists/${gistId}`, {
+export async function updateGist(gistId: string, content: BillsResponse) {
+  return githubApi.patch(`/gists/${gistId}`, {
     files: {
       'bills.json': {
-        content: JSON.stringify(billsContent, null, 2)
+        content: JSON.stringify(content, null, 2)
       }
     }
   })

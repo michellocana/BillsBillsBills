@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback, useEffect, useState } from 'react'
 import { GITHUB_GIST_ID } from '@env'
 
-import { updateBillGroups, fetchBills } from '../helpers/github'
+import { fetchBills, updateGist } from '../helpers/github'
 
 type BillsProviderProps = {
   children: ReactNode
@@ -12,6 +12,7 @@ type BillsProviderContext = {
   fetchAllBills(): Promise<void>
   billsResponse: BillsResponse
   onBillChange(billId: string, isPaid: boolean, changedBillGroup: BillGroup): void
+  onTemplateChange(changedTemplate: Template): void
 }
 
 export const BillsContext = React.createContext<BillsProviderContext>({
@@ -21,7 +22,8 @@ export const BillsContext = React.createContext<BillsProviderContext>({
     templates: [],
     billGroups: []
   },
-  onBillChange: () => {}
+  onBillChange: () => {},
+  onTemplateChange: () => {}
 })
 
 export default function BillsProvider({ children }: BillsProviderProps) {
@@ -33,24 +35,48 @@ export default function BillsProvider({ children }: BillsProviderProps) {
 
   const onBillChange = useCallback(
     async (billId: string, isPaid: boolean, changedBillGroup: BillGroup) => {
-      const newBillsResponse = {
+      const newBillsResponse: BillsResponse = {
         templates: billsResponse.templates,
-        billGroups: billsResponse.billGroups.map(billGroup => {
-          return {
-            ...billGroup,
-            bills: billGroup.bills.map(bill => {
-              if (billGroup.id === changedBillGroup.id && bill.id === billId) {
-                return { ...bill, isPaid }
-              }
+        billGroups: billsResponse.billGroups
+          .map(billGroup => {
+            return {
+              ...billGroup,
+              bills: billGroup.bills.map(bill => {
+                if (billGroup.id === changedBillGroup.id && bill.id === billId) {
+                  return { ...bill, isPaid }
+                }
 
-              return { ...bill }
-            })
-          }
-        })
+                return { ...bill }
+              })
+            }
+          })
+          .sort((billGroupA, billGroupB) => (billGroupA.id > billGroupB.id ? -1 : 1))
       }
 
       setBillsResponse(newBillsResponse)
-      await updateBillGroups(GITHUB_GIST_ID, newBillsResponse)
+      await updateGist(GITHUB_GIST_ID, newBillsResponse)
+    },
+    [billsResponse]
+  )
+
+  const onTemplateChange = useCallback(
+    async templateToUpdate => {
+      const newBillsResponse: BillsResponse = {
+        templates: billsResponse.templates
+          .map<Template>(template => {
+            if (template.id !== templateToUpdate.id) {
+              return template
+            }
+
+            return { ...template, ...templateToUpdate }
+          })
+          .sort((templateA, templateB) => (templateA.name < templateB.name ? -1 : 1))
+          .sort((templateA, templateB) => (templateA.expireDay < templateB.expireDay ? -1 : 1)),
+        billGroups: billsResponse.billGroups
+      }
+
+      setBillsResponse(newBillsResponse)
+      await updateGist(GITHUB_GIST_ID, newBillsResponse)
     },
     [billsResponse]
   )
@@ -67,7 +93,15 @@ export default function BillsProvider({ children }: BillsProviderProps) {
   }, [])
 
   return (
-    <BillsContext.Provider value={{ isRefreshing, fetchAllBills, billsResponse, onBillChange }}>
+    <BillsContext.Provider
+      value={{
+        isRefreshing,
+        fetchAllBills,
+        billsResponse,
+        onBillChange,
+        onTemplateChange
+      }}
+    >
       {children}
     </BillsContext.Provider>
   )

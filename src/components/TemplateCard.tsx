@@ -5,7 +5,8 @@ import Icon from 'react-native-vector-icons/Feather'
 import { COLOR_RED, COLOR_GREEN_1, COLOR_WHITE, COLOR_LIGHT_RED } from '../constants/colors'
 import Card, { CardType } from './Card'
 import ExpireDay from './ExpireDay'
-import TemplateEditModal from './TemplateEditModal'
+import TemplateModal from './TemplateModal'
+import useBills from '../hooks/useBills'
 
 type TemplateCardProps = Template & {}
 
@@ -33,7 +34,8 @@ const s = StyleSheet.create({
   }
 })
 
-export default function TemplateCard({ id, name, expireDay }: TemplateCardProps) {
+export default function TemplateCard({ ...template }: TemplateCardProps) {
+  const { onTemplateChange } = useBills()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
@@ -44,13 +46,13 @@ export default function TemplateCard({ id, name, expireDay }: TemplateCardProps)
         }}
       >
         <Card
-          key={id}
+          key={template.id}
           style={s.textWrapper}
           type={CardType.Success} // TODO change this based on enabled flag
         >
           <Text style={s.text}>
-            {name}
-            <ExpireDay day={expireDay} />
+            {template.name}
+            <ExpireDay day={template.expireDay} />
           </Text>
 
           <Switch
@@ -68,10 +70,10 @@ export default function TemplateCard({ id, name, expireDay }: TemplateCardProps)
         </Card>
       </TouchableNativeFeedback>
 
-      <TemplateEditModal
-        initialName={name}
-        initialExpireDay={expireDay}
+      <TemplateModal
+        template={template}
         isOpen={isModalOpen}
+        onSave={template => onTemplateChange(template)}
         onClose={() => setIsModalOpen(false)}
       />
     </>
