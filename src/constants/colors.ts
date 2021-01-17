@@ -14,5 +14,6 @@ export const COLOR_DARK_GRAY = '#121212'
 export const COLOR_BLACK = '#333333'
 export const COLOR_LIGHT_GREEN = '#B7EDD5'
 export const COLOR_RED = '#BF0404'
+export const COLOR_RED_RGB = hexaToRgb(COLOR_RED)
 export const COLOR_LIGHT_RED = '#FC5A5A'
 export const COLOR_LIGHT_RED_RGB = hexaToRgb(COLOR_LIGHT_RED)

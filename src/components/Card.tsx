@@ -1,7 +1,7 @@
-import { types } from '@babel/core'
-import React, { ReactNode } from 'react'
-import { StyleSheet, View, ViewProps } from 'react-native'
-import { COLOR_GRAY, COLOR_RED, COLOR_GREEN_1 } from '../constants/colors'
+import React, { ReactNode, useEffect, useRef } from 'react'
+import { Animated, StyleSheet, ViewProps } from 'react-native'
+import { DEFAULT_ANIMATION_DURATION } from '../constants/animation'
+import { COLOR_GRAY, COLOR_LIGHT_RED_RGB, COLOR_GREEN_1_RGB } from '../constants/colors'
 
 type CardProps = ViewProps & {
   children: ReactNode
@@ -9,8 +9,8 @@ type CardProps = ViewProps & {
 }
 
 export enum CardType {
-  Success = 'Success',
-  Danger = 'Danger'
+  Danger,
+  Success
 }
 
 const s = StyleSheet.create({
@@ -20,26 +20,39 @@ const s = StyleSheet.create({
     backgroundColor: COLOR_GRAY,
     borderRadius: 4,
     borderBottomWidth: 4
-  },
-
-  containerDanger: {
-    borderBottomColor: COLOR_RED
-  },
-
-  containerSuccess: {
-    borderBottomColor: COLOR_GREEN_1
   }
 })
 
 export default function Card({ children, type, style, ...otherProps }: CardProps) {
-  const typeStyle: Record<CardType, any> = {
-    [CardType.Success]: s.containerSuccess,
-    [CardType.Danger]: s.containerDanger
+  const borderColors: Record<CardType, any> = {
+    [CardType.Danger]: COLOR_LIGHT_RED_RGB,
+    [CardType.Success]: COLOR_GREEN_1_RGB
   }
+  const borderColor = useRef(new Animated.Value(type)).current
+
+  useEffect(() => {
+    Animated.timing(borderColor, {
+      toValue: type,
+      duration: DEFAULT_ANIMATION_DURATION,
+      useNativeDriver: false
+    }).start()
+  }, [type])
 
   return (
-    <View style={[s.container, typeStyle[type], style]} {...otherProps}>
+    <Animated.View
+      style={[
+        s.container,
+        {
+          borderColor: borderColor.interpolate({
+            inputRange: Object.keys(borderColors).map(Number),
+            outputRange: Object.values(borderColors)
+          })
+        },
+        style
+      ]}
+      {...otherProps}
+    >
       {children}
-    </View>
+    </Animated.View>
   )
 }
