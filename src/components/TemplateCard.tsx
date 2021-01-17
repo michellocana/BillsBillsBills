@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { TouchableNativeFeedback, Text, Switch, TouchableOpacity, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 
-import { COLOR_RED, COLOR_GREEN_1, COLOR_WHITE, COLOR_LIGHT_RED } from '../constants/colors'
+import { COLOR_GREEN_1, COLOR_WHITE, COLOR_LIGHT_RED } from '../constants/colors'
 import Card, { CardType } from './Card'
-import ExpireDay from './ExpireDay'
-import TemplateModal from './TemplateModal'
+import ExpireDay, { ExpireDayType } from './ExpireDay'
+import TemplateFormModal from './TemplateFormModal'
 import useBills from '../hooks/useBills'
 
 const s = StyleSheet.create({
@@ -32,7 +32,7 @@ const s = StyleSheet.create({
   }
 })
 
-export default function TemplateCard({ ...template }: Template) {
+export default function TemplateCard(props: Template) {
   const { onTemplateChange } = useBills()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -44,13 +44,16 @@ export default function TemplateCard({ ...template }: Template) {
         }}
       >
         <Card
-          key={template.id}
+          key={props.id}
           style={s.textWrapper}
-          type={CardType.Success} // TODO change this based on enabled flag
+          type={props.isEnabled ? CardType.Success : CardType.Danger}
         >
           <Text style={s.text}>
-            {template.name}
-            <ExpireDay day={template.expireDay} />
+            {props.name}
+            <ExpireDay
+              day={props.expireDay}
+              type={props.isEnabled ? ExpireDayType.Success : ExpireDayType.Danger}
+            />
           </Text>
 
           <Switch
@@ -59,18 +62,25 @@ export default function TemplateCard({ ...template }: Template) {
               true: COLOR_GREEN_1
             }}
             thumbColor={COLOR_WHITE}
-            value={template.isEnabled}
-            onValueChange={isEnabled => onTemplateChange({ ...template, isEnabled })}
+            value={props.isEnabled}
+            onValueChange={isEnabled => onTemplateChange({ ...props, isEnabled })}
           />
 
-          <TouchableOpacity activeOpacity={0.5} onPress={() => {}} style={s.iconTouchable}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => {
+              // TODO delete template with confirmation modal
+              // onTemplateDelete(template)
+            }}
+            style={s.iconTouchable}
+          >
             <Icon name='trash-2' size={24} style={s.icon} />
           </TouchableOpacity>
         </Card>
       </TouchableNativeFeedback>
 
-      <TemplateModal
-        template={template}
+      <TemplateFormModal
+        template={props}
         isOpen={isModalOpen}
         onSave={template => onTemplateChange(template)}
         onClose={() => setIsModalOpen(false)}

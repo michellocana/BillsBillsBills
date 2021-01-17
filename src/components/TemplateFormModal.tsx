@@ -13,10 +13,12 @@ import {
 import Icon from 'react-native-vector-icons/Feather'
 
 import { COLOR_DARK_GRAY, COLOR_GREEN_1, COLOR_LIGHT_RED, COLOR_WHITE } from '../constants/colors'
+import { DEFAULT_ANIMATION_DURATION } from '../constants/animation'
+
 import Card, { CardType } from './Card'
 import Spinner from './Spinner'
 
-type TemplateModalProps = {
+type TemplateFormModalProps = {
   isOpen: boolean
   template: Template
   onClose(): void
@@ -107,7 +109,12 @@ const s = StyleSheet.create({
   }
 })
 
-export default function TemplateModal({ isOpen, template, onClose, onSave }: TemplateModalProps) {
+export default function TemplateFormModal({
+  isOpen,
+  template,
+  onClose,
+  onSave
+}: TemplateFormModalProps) {
   const [name, setName] = useState(template.name)
   const [expireDay, setExpireDay] = useState(template.expireDay.toString())
   const [isSaving, setIsSaving] = useState(false)
@@ -130,7 +137,7 @@ export default function TemplateModal({ isOpen, template, onClose, onSave }: Tem
   useEffect(() => {
     Animated.timing(opacityValue, {
       toValue: Number(isSaving),
-      duration: 200,
+      duration: DEFAULT_ANIMATION_DURATION,
       useNativeDriver: true
     }).start()
   }, [isSaving])
