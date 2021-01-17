@@ -102,9 +102,9 @@ export default function TemplateEditModal({
       animationType='fade'
       onRequestClose={onClose}
       onShow={() => {
-        if (nameTextInputRef.current) {
-          nameTextInputRef.current.focus()
-        }
+        requestAnimationFrame(() => {
+          nameTextInputRef.current?.focus()
+        })
       }}
     >
       <TouchableWithoutFeedback onPress={onClose}>
