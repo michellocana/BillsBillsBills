@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import CheckBox from '@react-native-community/checkbox'
 
-import { COLOR_GREEN_1, COLOR_WHITE } from '../constants/colors'
-import ExpireDay, { ExpireDayType } from './ExpireDay'
+import { COLOR_GREEN_1, COLOR_WHITE } from '../../constants/colors'
+import ExpireDay, { ExpireDayType } from '../UI/ExpireDay'
 
 type BillGroupCheckboxProps = Bill & {
   onBillChange(billId: string, isPaid: boolean): void

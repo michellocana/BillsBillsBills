@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from '@env'
 
-import Spinner from '../components/Spinner'
+import Spinner from '../components/UI/Spinner'
 
 import { authorize } from '../helpers/github'
 

@@ -1,8 +1,8 @@
 import React from 'react'
 import { LayoutRectangle, StyleSheet, View } from 'react-native'
-import { COLOR_GRAY } from '../constants/colors'
+import { COLOR_GRAY } from '../../constants/colors'
 
-import { HOME_ROUTE, TEMPLATES_ROUTE } from '../constants/routes'
+import { HOME_ROUTE, TEMPLATES_ROUTE } from '../../constants/routes'
 
 import BottomBarLink from './BottomBarLink'
 

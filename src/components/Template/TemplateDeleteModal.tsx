@@ -1,11 +1,11 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
-import { COLOR_WHITE } from '../constants/colors'
-import ActionButton, { ActionButtonColor, ActionButtonType } from './ActionButton'
+import ActionButton, { ActionButtonColor, ActionButtonType } from '../UI/ActionButton'
+import { CardType } from '../UI/Card'
+import Modal from '../UI/Modal'
 
-import { CardType } from './Card'
-import Modal from './Modal'
+import { COLOR_WHITE } from '../../constants/colors'
 
 const s = StyleSheet.create({
   text: {

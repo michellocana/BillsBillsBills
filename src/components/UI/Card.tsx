@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useRef } from 'react'
 import { Animated, StyleSheet, ViewProps } from 'react-native'
-import { DEFAULT_ANIMATION_DURATION } from '../constants/animation'
-import { COLOR_GRAY, COLOR_LIGHT_RED_RGB, COLOR_GREEN_1_RGB } from '../constants/colors'
+import { DEFAULT_ANIMATION_DURATION } from '../../constants/animation'
+import { COLOR_GRAY, COLOR_LIGHT_RED_RGB, COLOR_GREEN_1_RGB } from '../../constants/colors'
 
 type CardProps = ViewProps & {
   children: ReactNode

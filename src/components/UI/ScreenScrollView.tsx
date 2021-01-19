@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react'
 import { RefreshControl, ScrollView, StyleSheet } from 'react-native'
 
-import { COLOR_GRAY, COLOR_GREEN_1 } from '../constants/colors'
-import useBills from '../hooks/useBills'
+import { COLOR_GRAY, COLOR_GREEN_1 } from '../../constants/colors'
+import useBills from '../../hooks/useBills'
 
 const s = StyleSheet.create({
   scrollView: {

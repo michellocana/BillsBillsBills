@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from 'react'
 import { Animated, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 
-import { COLOR_GREEN_1_RGB, COLOR_LIGHT_RED_RGB } from '../constants/colors'
-import { DEFAULT_ANIMATION_DURATION } from '../constants/animation'
+import { COLOR_GREEN_1_RGB, COLOR_LIGHT_RED_RGB } from '../../constants/colors'
+import { DEFAULT_ANIMATION_DURATION } from '../../constants/animation'
 
 type ExpireDayProps = {
   day: number

@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import { TouchableNativeFeedback, Text, Switch, TouchableOpacity, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 
-import { COLOR_GREEN_1, COLOR_WHITE, COLOR_LIGHT_RED } from '../constants/colors'
-import Card, { CardType } from './Card'
-import ExpireDay, { ExpireDayType } from './ExpireDay'
+import { COLOR_GREEN_1, COLOR_WHITE, COLOR_LIGHT_RED } from '../../constants/colors'
+import Card, { CardType } from '../UI/Card'
+import ExpireDay, { ExpireDayType } from '../UI/ExpireDay'
 import TemplateFormModal from './TemplateFormModal'
-import useBills from '../hooks/useBills'
+import useBills from '../../hooks/useBills'
 import TemplateDeleteModal from './TemplateDeleteModal'
 
 const s = StyleSheet.create({

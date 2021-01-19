@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { LayoutRectangle, SafeAreaView, StatusBar, StyleSheet, View } from 'react-native'
 import { NativeRouter, Route, Switch } from 'react-router-native'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
@@ -11,7 +11,7 @@ import { COLOR_BLACK, COLOR_DARK_GRAY } from './src/constants/colors'
 import AuthProvider from './src/contexts/AuthProvider'
 import BillsProvider from './src/contexts/BillsProvider'
 
-import BottomBar from './src/components/BottomBar'
+import BottomBar from './src/components/UI/BottomBar'
 
 import Home from './src/screens/Home'
 import Templates from './src/screens/Templates'
@@ -29,6 +29,8 @@ const s = StyleSheet.create({
   }
 })
 
+// TODO app icon
+// TODO change app name to BillsBillsBills
 export default function App() {
   const [bottomBarLayout, setBottomBarLayout] = useState<LayoutRectangle>()
 
@@ -38,10 +40,11 @@ export default function App() {
       <SafeAreaView style={s.safeAreaView}>
         <AuthProvider>
           <BillsProvider>
-            <NativeRouter>
+            <NativeRouter
+              // initialEntries={['/templates']}
+            >
               <View style={[s.routerWrapper, { paddingBottom: bottomBarLayout?.height ?? 0 }]}>
                 <Switch>
-                  <Route component={Templates} />
                   <Route exact path={HOME_ROUTE} component={Home} />
                   <Route path={TEMPLATES_ROUTE} component={Templates} />
                 </Switch>

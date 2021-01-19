@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
-import { COLOR_GREEN_1, COLOR_LIGHT_RED, COLOR_WHITE } from '../constants/colors'
+import { COLOR_GREEN_1, COLOR_LIGHT_RED, COLOR_WHITE } from '../../constants/colors'
 
 const s = StyleSheet.create({
   iconTouchable: {

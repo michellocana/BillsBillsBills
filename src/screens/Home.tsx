@@ -1,9 +1,9 @@
 import React from 'react'
 
-import BillGroupCard from '../components/BillGroupCard'
+import BillGroupCard from '../components/Bill/BillGroupCard'
 
 import useBills from '../hooks/useBills'
-import ScreenScrollView from '../components/ScreenScrollView'
+import ScreenScrollView from '../components/UI/ScreenScrollView'
 
 export default function Home() {
   const { billsResponse, onBillChange } = useBills()

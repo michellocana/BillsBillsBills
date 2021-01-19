@@ -2,8 +2,8 @@ import React from 'react'
 
 import useBills from '../hooks/useBills'
 
-import ScreenScrollView from '../components/ScreenScrollView'
-import TemplateCard from '../components/TemplateCard'
+import ScreenScrollView from '../components/UI/ScreenScrollView'
+import TemplateCard from '../components/Template/TemplateCard'
 
 // TODO create template modal
 export default function Templates() {

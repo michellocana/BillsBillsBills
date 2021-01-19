@@ -12,8 +12,8 @@ import {
 import Card, { CardType } from './Card'
 import Spinner from './Spinner'
 
-import { DEFAULT_ANIMATION_DURATION } from '../constants/animation'
-import { COLOR_DARK_GRAY } from '../constants/colors'
+import { DEFAULT_ANIMATION_DURATION } from '../../constants/animation'
+import { COLOR_DARK_GRAY } from '../../constants/colors'
 
 const s = StyleSheet.create({
   backdrop: {

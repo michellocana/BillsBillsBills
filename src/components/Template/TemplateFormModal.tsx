@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { StyleSheet, TextInput, View } from 'react-native'
 
-import { COLOR_WHITE } from '../constants/colors'
-import ActionButton, { ActionButtonColor, ActionButtonType } from './ActionButton'
-import { CardType } from './Card'
+import { COLOR_WHITE } from '../../constants/colors'
+import ActionButton, { ActionButtonColor, ActionButtonType } from '../UI/ActionButton'
+import { CardType } from '../UI/Card'
 
-import Modal from './Modal'
+import Modal from '../UI/Modal'
 
 type TemplateFormModalProps = {
   isOpen: boolean

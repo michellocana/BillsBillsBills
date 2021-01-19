@@ -3,8 +3,8 @@ import { Animated, StyleSheet, TouchableNativeFeedback, View } from 'react-nativ
 import { useHistory, useLocation } from 'react-router-native'
 import Icon from 'react-native-vector-icons/Feather'
 
-import { COLOR_GREEN_1, COLOR_WHITE } from '../constants/colors'
-import { DEFAULT_ANIMATION_DURATION } from '../constants/animation'
+import { COLOR_GREEN_1, COLOR_WHITE } from '../../constants/colors'
+import { DEFAULT_ANIMATION_DURATION } from '../../constants/animation'
 
 const s = StyleSheet.create({
   link: {

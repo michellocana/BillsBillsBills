@@ -1,10 +1,10 @@
 import dayjs from 'dayjs'
 import React from 'react'
 import { StyleSheet, Text } from 'react-native'
-import { COLOR_WHITE } from '../constants/colors'
+import { COLOR_WHITE } from '../../constants/colors'
 
 import BillGroupCheckbox from './BillGroupCheckbox'
-import Card, { CardType } from './Card'
+import Card, { CardType } from '../UI/Card'
 
 const s = StyleSheet.create({
   title: {
