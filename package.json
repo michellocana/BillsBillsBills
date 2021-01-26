@@ -18,7 +18,8 @@
     "react-native": "^0.63.4",
     "react-native-app-auth": "^6.0.1",
     "react-native-vector-icons": "^7.1.0",
-    "react-router-native": "^5.2.0"
+    "react-router-native": "^5.2.0",
+    "slug": "^4.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.5.0",
@@ -30,6 +31,7 @@
     "@types/react-native-vector-icons": "^6.4.6",
     "@types/react-router-native": "^5.1.0",
     "@types/react-test-renderer": "^16.9.0",
+    "@types/slug": "^0.9.1",
     "babel-jest": "^24.1.0",
     "cross-env": "^7.0.3",
     "jest": "^24.1.0",

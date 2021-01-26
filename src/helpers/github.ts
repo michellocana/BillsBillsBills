@@ -89,22 +89,35 @@ export async function createBillGroup(
   billsResponse: BillsResponse
 ): Promise<BillGroup[]> {
   const { billGroups, templates } = billsResponse
-  const newBillsResponse: BillsResponse = setOverdue({
-    ...billsResponse,
-    billGroups: [...billGroups]
-      .concat({
-        id: billGroupId,
-        bills: templates
-          .filter(template => template.isEnabled)
-          .sort((templateA, templateB) => (templateA.expireDay < templateB.expireDay ? -1 : 1))
-          .map(({ id, name, expireDay }: Template) => ({ id, name, expireDay, isPaid: false }))
-      })
-      .sort((billGroupA, billGroupB) => (billGroupA.id > billGroupB.id ? -1 : 1))
-  })
+  const newBillsResponse: BillsResponse = updateBillsResponse(
+    setOverdue({
+      ...billsResponse,
+      billGroups: [...billGroups]
+        .concat({
+          id: billGroupId,
+          bills: templates
+            .filter(template => template.isEnabled)
+            .sort((templateA, templateB) => (templateA.expireDay < templateB.expireDay ? -1 : 1))
+            .map(({ id, name, expireDay }: Template) => ({ id, name, expireDay, isPaid: false }))
+        })
+        .sort((billGroupA, billGroupB) => (billGroupA.id > billGroupB.id ? -1 : 1))
+    })
+  )
 
   await updateGist(gistId, newBillsResponse)
 
   return newBillsResponse.billGroups
+}
+
+export function updateBillsResponse(newBillsResponse: BillsResponse): BillsResponse {
+  return {
+    templates: newBillsResponse.templates
+      .sort((templateA, templateB) => (templateA.name < templateB.name ? -1 : 1))
+      .sort((templateA, templateB) => (templateA.expireDay < templateB.expireDay ? -1 : 1)),
+    billGroups: newBillsResponse.billGroups.sort((billGroupA, billGroupB) =>
+      billGroupA.id > billGroupB.id ? -1 : 1
+    )
+  }
 }
 
 export async function updateGist(gistId: string, content: BillsResponse) {

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { StyleSheet, TextInput, View } from 'react-native'
+import slug from 'slug'
 
 import { COLOR_WHITE } from '../../constants/colors'
 import ActionButton, { ActionButtonColor, ActionButtonType } from '../UI/ActionButton'
@@ -9,7 +10,7 @@ import Modal from '../UI/Modal'
 
 type TemplateFormModalProps = {
   isOpen: boolean
-  template: Template
+  template?: Template
   onClose(): void
   onSave(template: Template): void
 }
@@ -38,19 +39,24 @@ export default function TemplateFormModal({
   onClose,
   onSave
 }: TemplateFormModalProps) {
-  const [name, setName] = useState(template.name)
-  const [expireDay, setExpireDay] = useState(template.expireDay.toString())
+  const [name, setName] = useState(template?.name ?? '')
+  const [expireDay, setExpireDay] = useState((template?.expireDay || '').toString())
   const [isSaving, setIsSaving] = useState(false)
   const nameTextInputRef = useRef<TextInput>(null)
   const submit = useCallback(async () => {
     setIsSaving(true)
-    await onSave({ ...template, name, expireDay: Number(expireDay) })
+    await onSave({
+      id: template?.id ?? slug(name),
+      name,
+      expireDay: Number(expireDay),
+      isEnabled: template?.isEnabled !== undefined ? template.isEnabled : true,
+    })
     setIsSaving(false)
     onClose()
   }, [name, expireDay])
 
   useEffect(() => {
-    if (!isOpen) {
+    if (!isOpen && template) {
       setName(template.name)
       setExpireDay(template.expireDay.toString())
     }
