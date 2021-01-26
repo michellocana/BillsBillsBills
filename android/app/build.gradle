@@ -133,13 +133,13 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.billstopay"
+        applicationId "com.billsbillsbills"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
         manifestPlaceholders = [
-            appAuthRedirectScheme: 'com.billstopay'
+            appAuthRedirectScheme: 'com.billsbillsbills'
         ]
     }
     splits {

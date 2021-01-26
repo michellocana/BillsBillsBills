@@ -26,7 +26,7 @@ export async function authorize(clientId: string, clientSecret: string) {
     const authState = await appAuthAuthorize({
       clientId,
       clientSecret,
-      redirectUrl: 'com.billstopay://oauthredirect',
+      redirectUrl: 'com.billsbillsbills://oauthredirect',
       scopes: ['identity', 'gist'],
       serviceConfiguration: {
         authorizationEndpoint: GITHUB_AUTHORIZATION_URL,

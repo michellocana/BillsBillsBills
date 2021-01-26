@@ -1,8 +1,8 @@
 platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-target 'BillsToPay' do
-  # Pods for BillsToPay
+target 'BillsBillsBills' do
+  # Pods for BillsBillsBills
   pod 'React', :path => '../node_modules/react-native/'
   pod 'React-Core', :path => '../node_modules/react-native/React'
   pod 'React-DevSupport', :path => '../node_modules/react-native/React'
@@ -27,7 +27,7 @@ target 'BillsToPay' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  target 'BillsToPayTests' do
+  target 'BillsBillsBillsTests' do
     inherit! :search_paths
     # Pods for testing
   end
@@ -35,10 +35,10 @@ target 'BillsToPay' do
   use_native_modules!
 end
 
-target 'BillsToPay-tvOS' do
-  # Pods for BillsToPay-tvOS
+target 'BillsBillsBills-tvOS' do
+  # Pods for BillsBillsBills-tvOS
 
-  target 'BillsToPay-tvOSTests' do
+  target 'BillsBillsBills-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
