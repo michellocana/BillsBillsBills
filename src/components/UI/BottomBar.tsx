@@ -1,8 +1,9 @@
 import React from 'react'
-import { LayoutRectangle, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { COLOR_GRAY } from '../../constants/colors'
 
 import { HOME_ROUTE, TEMPLATES_ROUTE } from '../../constants/routes'
+import useBottomBar from '../../hooks/useBottomBar'
 
 import BottomBarLink from './BottomBarLink'
 
@@ -17,13 +18,14 @@ const s = StyleSheet.create({
   }
 })
 
-type BottomBarProps = {
-  onLayout(layout: LayoutRectangle): void
-}
+export default function BottomBar() {
+  const { setLayout } = useBottomBar()
 
-export default function BottomBar({ onLayout }: BottomBarProps) {
   return (
-    <View style={s.container} onLayout={event => onLayout(event.nativeEvent.layout)}>
+    <View
+      style={s.container}
+      onLayout={event => setLayout({ height: event.nativeEvent.layout.height })}
+    >
       <BottomBarLink to={HOME_ROUTE} icon='dollar-sign'>
         Contas
       </BottomBarLink>
