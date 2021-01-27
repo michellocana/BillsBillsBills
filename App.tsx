@@ -30,7 +30,6 @@ const s = StyleSheet.create({
   }
 })
 
-// TODO app icon
 export default function App() {
   return (
     <>
