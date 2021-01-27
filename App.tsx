@@ -6,7 +6,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 
 import { HOME_ROUTE, TEMPLATES_ROUTE } from './src/constants/routes'
-import { COLOR_BLACK, COLOR_DARK_GRAY, COLOR_GREEN_2 } from './src/constants/colors'
+import { COLOR_BLACK, COLOR_DARK_GRAY } from './src/constants/colors'
 
 import AuthProvider from './src/contexts/AuthProvider'
 import BillsProvider from './src/contexts/BillsProvider'
@@ -31,7 +31,6 @@ const s = StyleSheet.create({
 })
 
 // TODO app icon
-// TODO change app name to BillsBillsBills
 export default function App() {
   return (
     <>
@@ -42,9 +41,7 @@ export default function App() {
             <BottomBarProvider>
               <BottomBarContext.Consumer>
                 {({ layout: bottomBarLayout }) => (
-                  <NativeRouter
-                  // initialEntries={['/templates']}
-                  >
+                  <NativeRouter>
                     <View style={[s.routerWrapper, { paddingBottom: bottomBarLayout.height }]}>
                       <Switch>
                         <Route exact path={HOME_ROUTE} component={Home} />
